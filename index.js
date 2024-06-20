@@ -15,7 +15,7 @@ app.use("/api/products", productRoute);
 
 
 // Setup Connection for MonggoDB
-mongoose.connect("mongodb+srv://fahmiwiradika:HPwwwWvrutJdUK9S@backenddb.vgtoqfs.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB")
+mongoose.connect("mongodb+srv://${{secret.SCA_DB_NAME}}:${{secret.SCA_DB_PASSWORD}}@backenddb.vgtoqfs.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB")
     .then(() => {
         console.log("Connected to database!");
         app.listen(3000, () => {
