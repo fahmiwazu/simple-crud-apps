@@ -5,12 +5,14 @@ const express = require('express')
 const mongoose = require('mongoose');
 const Product = require('./models/product.models.js');
 const productRoute = require('./routes/product.route.js');
+const e = require('express');
 
 // Initiate app
 const app = express()
 
 // Middleware
 app.use(express.json());
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 
 // product routes
