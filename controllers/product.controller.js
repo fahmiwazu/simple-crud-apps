@@ -1,9 +1,9 @@
 const Product = require("../models/product.models.js");
 
-// get all products
+// get all products - sorted by newest first
 const getProducts = async (req, res) => {
     try {
-        const products = await Product.find({});
+        const products = await Product.find({}).sort({ createdAt: -1 });
         res.status(200).json(products);
     }
     catch (error) {
