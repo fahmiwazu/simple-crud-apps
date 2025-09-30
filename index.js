@@ -1,27 +1,32 @@
 // Load environment variables
 require('dotenv').config();
 
-const express = require('express')
+const express = require('express');
 const mongoose = require('mongoose');
-const Product = require('./models/product.models.js');
+const path = require('path');
 const productRoute = require('./routes/product.route.js');
-const e = require('express');
 
 // Initiate app
-const app = express()
+const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
+
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // product routes
 app.use("/api/products", productRoute);
 
+// Serve index.html for root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
-// Setup Connection for MonggoDB
+// Setup Connection for MongoDB
 const dbName = process.env.SCA_DB_NAME;
-const dbPassword = process.env.SCA_DB_PASSWORD ;
+const dbPassword = process.env.SCA_DB_PASSWORD;
 
 // Check if environment variables are loaded
 if (!dbName || !dbPassword) {
@@ -34,10 +39,17 @@ const mongoURI = `mongodb+srv://${dbName}:${dbPassword}@backenddb.vgtoqfs.mongod
 mongoose.connect(mongoURI)
     .then(() => {
         console.log("Connected to database!");
-        app.listen(3000, () => {
-            console.log('Server is running on port 3000');
-        });
     })
-    .catch(() => {
-        console.log("Connection failed!");
+    .catch((err) => {
+        console.log("Connection failed!", err);
     });
+
+// Export for Vercel serverless
+module.exports = app;
+
+// Only listen on port in development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(3000, () => {
+        console.log('Server is running on port 3000');
+    });
+}
