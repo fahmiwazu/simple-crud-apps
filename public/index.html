@@ -639,7 +639,11 @@
                 });
 
                 if (response.ok) {
-                    showNotification('Product added successfully!', 'success');
+                    const product = await response.json();
+                    showNotification(
+                        `Product ID: ${product._id} are added successfully!`, 
+                        'success'
+                    );
                     document.getElementById('productName').value = '';
                     document.getElementById('productPrice').value = '';
                     document.getElementById('productQuantity').value = '';
@@ -700,7 +704,11 @@
                 });
 
                 if (response.ok) {
-                    showNotification('Product updated successfully!', 'success');
+                    const product = await response.json();
+                    showNotification(
+                        `Product ID: ${product._id} are updated successfully!`,
+                        'success'
+                    );         
                     closeUpdateModal();
                     loadProducts();
                 } else {
@@ -734,7 +742,9 @@
                 });
 
                 if (response.ok) {
-                    showNotification('Product deleted successfully!', 'success');
+                    showNotification(
+                        `Product ID: ${currentDeleteId} are deleted successfully!`, 
+                        'success');
                     closeDeleteModal();
                     loadProducts();
                 } else {
